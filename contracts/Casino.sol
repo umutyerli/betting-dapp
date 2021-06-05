@@ -39,10 +39,24 @@ contract Casino is Mortal{
         revert();
     }
 
-    // function bet(uint _number) payable public {
-    //     require(_number > 0 && _number <=10);
-    //     require(msg.value >= minBet);
-    //     uint winningNumber = block.number
-    // }
+    function bet(uint _number) public payable {
+        require(_number > 0 && _number <=10);
+        require(msg.value >= minBet);
+
+        uint winningNumber = block.number % 10 + 1;
+        address payable winner = payable(msg.sender);
+
+        if(_number == winningNumber) {
+            uint amountWon = msg.value * (100 - houseEdge)/10;
+            if(!winner.send(amountWon)) revert();
+            emit Won(true, amountWon);
+        } else {
+            emit Won(false, 0);
+        }
+    }
+
+    function checkContractBalance() public view Owned returns (uint256) {
+        return address(this).balance;
+    }
 
 }
