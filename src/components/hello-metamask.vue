@@ -4,7 +4,7 @@
 
 <script>
 export default {
-    name: 'hello-metamask'
+name: 'hello-metamask'
 }
 </script>
 
